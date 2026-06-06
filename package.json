@@ -13,7 +13,7 @@
 		"url": "git+https://github.com/zokugun/node-regexp.git"
 	},
 	"bugs": {
-		"url": "https://github.com/zokugun/node-regexp/issues"
+		"url": "https://github.com/zokugun/node-regexp/discussions/categories/issue-triage"
 	},
 	"type": "module",
 	"exports": {
