@@ -136,6 +136,6 @@ Support this project by becoming a financial contributor.
 License
 -------
 
-Copyright &copy; 2026-present Baptiste Augrain
+Copyright &copy; 2021-present Baptiste Augrain
 
 Licensed under the [MIT license](https://opensource.org/licenses/MIT).
