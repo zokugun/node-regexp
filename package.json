@@ -1,14 +1,14 @@
 {
-	"name": "@daiyam/regexp",
+	"name": "@zokugun/regexp",
 	"description": "RegExp parser/formatter/visitor/transformer",
 	"version": "0.2.3",
-	"homepage": "https://github.com/daiyam/node-regexp",
+	"homepage": "https://github.com/zokugun/node-regexp",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/daiyam/node-regexp.git"
+		"url": "https://github.com/zokugun/node-regexp.git"
 	},
 	"bugs": {
-		"url": "https://github.com/daiyam/node-regexp/issues"
+		"url": "https://github.com/zokugun/node-regexp/issues"
 	},
 	"author": {
 		"name": "Baptiste Augrain",

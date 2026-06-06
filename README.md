@@ -1,20 +1,20 @@
-[@daiyam/regexp](https://github.com/daiyam/node-regexp)
-======================================================================
+[@zokugun/regexp](https://github.com/zokugun/node-regexp)
+=========================================================
 
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![NPM Version](https://img.shields.io/npm/v/@daiyam/regexp.svg?colorB=green)](https://www.npmjs.com/package/@daiyam/regexp)
+[![NPM Version](https://img.shields.io/npm/v/@zokugun/regexp.svg?colorB=green)](https://www.npmjs.com/package/@zokugun/regexp)
 
-With `@daiyam/regexp`, you can parse a regular expression to get an AST. Then you can visit, transform or/and translate the ast. When you have finished your edits, you can stringify the AST to get a string to create a `RegExp`.
+With `@zokugun/regexp`, you can parse a regular expression to get an AST. Then you can visit, transform or/and translate the ast. When you have finished your edits, you can stringify the AST to get a string to create a `RegExp`.
 
 Getting Started
 ---------------
 
 With [node](http://nodejs.org) previously installed:
 
-	npm install @daiyam/regexp
+	npm install @zokugun/regexp
 
 ```typescript
-import { escape, parse, stringify, translate, visit, Flavor, Token, TokenType } from '@daiyam/regexp'
+import { escape, parse, stringify, translate, visit, Flavor, Token, TokenType } from '@zokugun/regexp'
 
 function listCaptureGroups(regex: string): Token[] {
     const ast = parse(regex);
