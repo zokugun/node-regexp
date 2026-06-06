@@ -4,22 +4,29 @@
  * http://pegjs.org/
  */
 
-"use strict";
+import { Token, TokenType } from '../types.js';
 
 function peg$subclass(child, parent) {
-  function ctor() { this.constructor = child; }
+  function ctor() { // @ts-ignore
+  this.constructor = child; }
   ctor.prototype = parent.prototype;
   child.prototype = new ctor();
 }
 
 function peg$SyntaxError(message, expected, found, location) {
+  // @ts-ignore
   this.message  = message;
+  // @ts-ignore
   this.expected = expected;
+  // @ts-ignore
   this.found    = found;
+  // @ts-ignore
   this.location = location;
+  // @ts-ignore
   this.name     = "SyntaxError";
 
   if (typeof Error.captureStackTrace === "function") {
+    // @ts-ignore
     Error.captureStackTrace(this, peg$SyntaxError);
   }
 }
@@ -168,7 +175,7 @@ function peg$parse(input, options) {
       peg$c8 = ")",
       peg$c9 = peg$literalExpectation(")", false),
       peg$c10 = function(modifier, begin, matches, end) {
-      	const body = []
+      	const body: any[] = []
 
       	if(modifier) {
       		body.push(modifier[1])
@@ -365,7 +372,7 @@ function peg$parse(input, options) {
       peg$savedPos         = 0,
       peg$posDetailsCache  = [{ line: 1, column: 1 }],
       peg$maxFailPos       = 0,
-      peg$maxFailExpected  = [],
+      peg$maxFailExpected: any[] = [],
       peg$silentFails      = 0,
 
       peg$result;
@@ -378,14 +385,17 @@ function peg$parse(input, options) {
     peg$startRuleFunction = peg$startRuleFunctions[options.startRule];
   }
 
+  // @ts-ignore
   function text() {
     return input.substring(peg$savedPos, peg$currPos);
   }
 
+  // @ts-ignore
   function location() {
     return peg$computeLocation(peg$savedPos, peg$currPos);
   }
 
+  // @ts-ignore
   function expected(description, location) {
     location = location !== void 0 ? location : peg$computeLocation(peg$savedPos, peg$currPos)
 
@@ -396,6 +406,7 @@ function peg$parse(input, options) {
     );
   }
 
+  // @ts-ignore
   function error(message, location) {
     location = location !== void 0 ? location : peg$computeLocation(peg$savedPos, peg$currPos)
 
@@ -721,6 +732,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsebegin() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -741,6 +753,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parseend() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -1185,6 +1198,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsequantifierRequired() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -1205,6 +1219,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsequantifierAny() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -1225,6 +1240,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsequantifierOptional() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -1359,6 +1375,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsegroupCapture() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -1747,6 +1764,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsecharsetTerminal() {
+    // @ts-ignore
     var s0, s1;
 
     peg$silentFails++;
@@ -1764,6 +1782,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsecharsetLiteral() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -1860,6 +1879,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parseanyCharacter() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -2033,6 +2053,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsebackspaceCharacter() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -2053,6 +2074,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsecarriageReturnCharacter() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -2108,6 +2130,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsedigitCharacter() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -2128,6 +2151,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsenonDigitCharacter() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -2148,6 +2172,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parseformFeedCharacter() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -2218,6 +2243,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parselineFeedCharacter() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -2300,6 +2326,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsenullCharacter() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -2370,6 +2397,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsetabCharacter() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -2626,6 +2654,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parseverticalTabCharacter() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -2646,6 +2675,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsewhiteSpaceCharacter() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -2666,6 +2696,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsenonWhiteSpaceCharacter() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -2686,6 +2717,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsewordBoundaryCharacter() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -2706,6 +2738,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsenonWordBoundaryCharacter() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -2726,6 +2759,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsewordCharacter() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -2746,6 +2780,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parsenonWordCharacter() {
+    // @ts-ignore
     var s0, s1;
 
     s0 = peg$currPos;
@@ -2800,10 +2835,6 @@ function peg$parse(input, options) {
     return s0;
   }
 
-
-  	const { TokenType } = require('../src/type.js')
-
-
   peg$result = peg$startRuleFunction();
 
   if (peg$result !== peg$FAILED && peg$currPos === input.length) {
@@ -2823,7 +2854,4 @@ function peg$parse(input, options) {
   }
 }
 
-module.exports = {
-  SyntaxError: peg$SyntaxError,
-  parse:       peg$parse
-};
+export const pegParse = peg$parse as (s: string) => Token;

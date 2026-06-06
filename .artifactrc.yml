@@ -1,0 +1,18 @@
+$schema: https://raw.githubusercontent.com/zokugun/artifact/v0.11.0/schemas/v3/install.json
+artifacts:
+  "@daiyam/artifact-lang-js":
+    version: 0.13.1
+    requires:
+      - "20"
+  "@daiyam/artifact-lang-ts":
+    version: 0.10.1
+  "@daiyam/artifact-npm":
+    version: 0.8.7
+  "@daiyam/artifact-npm-ts":
+    version: 0.6.1
+  "@daiyam/artifact-npm-lib-ts":
+    version: 0.2.14
+  "@daiyam/artifact-npm-zokugun":
+    version: 0.3.3
+  "@daiyam/artifact-test-vitest-ts":
+    version: 0.5.3

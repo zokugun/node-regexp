@@ -1,0 +1,6 @@
+entry:
+  .: index.ts
+format:
+  - esm
+  - cjs
+outDir: lib

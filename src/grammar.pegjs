@@ -1,7 +1,3 @@
-{
-	const { TokenType } = require('../src/type.js')
-}
-
 regexp		= patternMod / pattern
 
 pattern		= match:match alternate:("|" pattern)? {

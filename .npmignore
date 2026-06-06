@@ -4,6 +4,7 @@
 !package.json
 !LICENSE
 !README.md
-!lib/parser.js
-!src/*.js
-!src/index.d.ts
+!lib/**/*.cjs
+!lib/**/*.mjs
+!lib/**/*.d.cts
+!lib/**/*.d.mts

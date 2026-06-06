@@ -1,22 +1,131 @@
 name: Publish Package
 
 on:
+  workflow_dispatch: {}
   push:
     tags:
-      - "*"
+      - v*
+
+permissions:
+  id-token: write   # NPM
+  contents: write   # Release
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    environment: publish
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          node-version: 12
-          registry-url: 'https://registry.npmjs.org'
-          cache: 'yarn'
-      - run: yarn --frozen-lockfile
-      - run: yarn build
-      - run: npm publish
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Get Version
+        run: |
+          # Get the latest tag
+          LATEST_TAG=$(git tag --sort=-v:refname | head -n1)
+
+          if [ -z "$LATEST_TAG" ]; then
+            echo "No tags found in the repository"
+            exit 1
+          fi
+
+          echo "VERSION=$LATEST_TAG" >> $GITHUB_ENV
+          echo "Using version: $LATEST_TAG"
+
+      - name: Check Existing Release
+        run: |
+          # Try to get the release information
+          RELEASE_INFO=$(gh release view ${VERSION} --json assets,url 2>/dev/null || echo "")
+
+          if [ ! -z "$RELEASE_INFO" ]; then
+            echo "Release exists"
+            echo "RELEASE_EXISTS=yes" >> $GITHUB_ENV
+
+            # Get the TGZ asset URL from the release
+            TGZ_URL=$(echo $RELEASE_INFO | jq -r '.assets[] | select(.name | endswith(".tgz")) | .url')
+
+            if [ ! -z "$TGZ_URL" ]; then
+              echo "Found existing TGZ file"
+              echo "TGZ_URL=$TGZ_URL" >> $GITHUB_ENV
+              echo "TGZ_NAME=$(echo $RELEASE_INFO | jq -r '.assets[] | select(.name | endswith(".tgz")) | .name')" >> $GITHUB_ENV
+            fi
+          else
+            echo "RELEASE_EXISTS=no" >> $GITHUB_ENV
+          fi
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Download Existing TGZ
+        if: env.RELEASE_EXISTS == 'yes' && env.TGZ_URL != ''
+        run: |
+          # Download archive
+          gh api ${TGZ_URL} --header 'Accept: application/octet-stream' > ${TGZ_NAME}
+
+          # Extract archive
+          tar xvfz ${TGZ_NAME} --strip-components=1
+
+          # Don't re-build project
+          jq 'del(.scripts.prepack)' package.json > package.json.tmp
+          mv package.json.tmp package.json
+
+          # Export checksum
+          echo "CHECKSUM=$(sha256sum ${TGZ_NAME} | cut -d ' ' -f 1)" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          node-version: latest
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+
+      - name: Build
+        if: env.RELEASE_EXISTS == 'no'
+        run: |
+          npm ci
+          npm pack
+
+          TGZ_NAME=$(ls *.tgz)
+          CHECKSUM=$(sha256sum $TGZ_NAME | cut -d ' ' -f 1)
+
+          echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
+          echo "CHECKSUM=$CHECKSUM" >> $GITHUB_ENV
+          echo "$CHECKSUM" > "$TGZ_NAME.sha256"
+
+      - name: Get Changelog
+        if: env.RELEASE_EXISTS == 'no'
+        run: |
+          CHANGELOG_ENTRY=$(node .github/scripts/get-changelog.js ${VERSION})
+
+          # Properly handle multiline output in GitHub Actions
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+
+          echo "CHANGELOG_ENTRY<<$EOF" >> $GITHUB_ENV
+          echo "$CHANGELOG_ENTRY" >> $GITHUB_ENV
+          echo "$EOF" >> $GITHUB_ENV
+
+      - name: Release
+        if: env.RELEASE_EXISTS == 'no'
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
+        with:
+          files: |
+            ${{ env.TGZ_NAME }}
+            ${{ env.TGZ_NAME }}.sha256
+          name: ${{ env.VERSION }}
+          tag_name: ${{ env.VERSION }}
+          body: |
+            Release ${{ env.VERSION }}
+
+            ## What's Changed
+            ${{ env.CHANGELOG_ENTRY }}
+
+            ## Checksum (SHA-256)
+            ```
+            ${{ env.CHECKSUM }}
+            ```
+
+      - name: Publish to NPM Registry
+        run: npm publish --provenance --access=public
