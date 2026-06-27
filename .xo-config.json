@@ -6,6 +6,14 @@
 		"src/generated/parser.ts",
 		"test/fixtures"
 	],
+	"overrides": [
+		{
+			"files": "**/*.test.ts",
+			"rules": {
+				"@typescript-eslint/no-unused-expressions": "off"
+			}
+		}
+	],
 	"rules": {
 		"@typescript-eslint/ban-types": "off",
 		"@typescript-eslint/brace-style": [
@@ -176,13 +184,5 @@
 				}
 			}
 		]
-	},
-	"overrides": [
-		{
-			"files": "**/*.test.ts",
-			"rules": {
-				"@typescript-eslint/no-unused-expressions": "off"
-			}
-		}
-	]
+	}
 }

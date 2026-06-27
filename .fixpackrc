@@ -1,4 +1,5 @@
 {
+	"finalNewLine": true,
 	"required": [
 		"dependencies"
 	],
@@ -29,7 +30,7 @@
 		"optionalDependencies",
 		"peerDependencies",
 		"overrides",
+		"allowScripts",
 		"keywords"
-	],
-	"finalNewLine": true
+	]
 }

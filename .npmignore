@@ -8,3 +8,5 @@
 !lib/**/*.mjs
 !lib/**/*.d.cts
 !lib/**/*.d.mts
+!lib/**/*.js
+!lib/**/*.d.ts
